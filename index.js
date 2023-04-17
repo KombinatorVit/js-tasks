@@ -10,10 +10,10 @@ console.log(getAverage(72381, 41562, 29465))//dept2q2
 function printBonus(dept1AverSales, dept2AverSales) {
     let winner// = dept1AverSales > dept2AverSales;
     if (dept1AverSales > dept2AverSales) {
-        winner = ((dept1AverSales - dept2AverSales) /dept2AverSales * 100) ;
-        console.log(`По результатам первого квартала,первый отдел заработал больше на ${winner}`%)
+        winner = ((dept1AverSales - dept2AverSales) / dept2AverSales * 100);
+        console.log(`По результатам первого квартала,первый отдел заработал больше на ${winner}%`)
     } else
-        winner = ((dept2AverSales - dept1AverSales)/dept1AverSales * 100);
-    console.log(`По результатам первого квартала,второй отдел заработал больше на ${winner}`%)
+        winner = ((dept2AverSales - dept1AverSales) / dept1AverSales * 100);
+    console.log(`По результатам первого квартала,второй отдел заработал больше на ${winner}%`)
 
 }
