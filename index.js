@@ -1,86 +1,85 @@
-function power(pow) {
-    return function (num) {
-        return num ** pow
-    }
+const game = {
+    team1: 'REAL MADRID',
+    team2: 'BARCELONA',
+    players: [
+        [
+            'Courtois',
+            'Vazquez',
+            'Militao',
+            'Nacho',
+            'Mendy',
+            'Casemiro',
+            'Valverde',
+            'Modrich',
+            'Kroos',
+            'Vinicius',
+            'Benzema',
+        ],
+        [
+            'Stegen',
+            'Mingueza',
+            'Araujo',
+            'Lenglet',
+            'Dest',
+            'Busquets',
+            'Jong',
+            'Alba',
+            'Messi',
+            'Pedri',
+            'Dembele',
+        ],
+    ],
+    score: '2:1',
+    scored: ['Kroos', 'Benzema', 'Mingueza'],
+    date: 'Apr 10th, 2021',
+    odds: {
+        team1: 1.48,
+        draw: 2.53,
+        team2: 4.25,
+    },
+};
+const players1 = [
+    'Courtois',
+    'Vazquez',
+    'Militao',
+    'Nacho',
+    'Mendy',
+    'Casemiro',
+    'Valverde',
+    'Modrich',
+    'Kroos',
+    'Vinicius',
+    'Benzema',
+]
+
+const players2 = [
+    'Stegen',
+    'Mingueza',
+    'Araujo',
+    'Lenglet',
+    'Dest',
+    'Busquets',
+    'Jong',
+    'Alba',
+    'Messi',
+    'Pedri',
+    'Dembele',
+]
+
+const goalkeeper = players1[0]
+const fieldPlayers = players1.slice(1)
+const allPlayers = players1.concat(players2)
+const players1Total = players1.concat(['Marselo', 'Isco', 'Asensio', 'Diaz', 'Odriozola'])
+const {team1, draw, team2} = game.odds
+
+const printGoals = (...namePlayers) => {
+
 }
-
-
-const power2 = (pow) => (num) => num ** pow
-
-const prices = [[100, 200], [120, 100], [200, 350]]
-
-// const deltaPriceChange = (arr) => {
-//     const sumElementArray = arr.map(el => el.reduce((acc, item) => {
-//         return item -= acc
-//     }, 0)).filter(item => item > 0)
-//     console.log(sumElementArray)
-//
-//     return sumElementArray
-//
-// }
-//
-// deltaPriceChange(prices)
-
-// const calculatePriceDelta = (arr) => {
-//     const resultArray = []
-//
-//     for (let itemArray of arr){
-//
-//         if(itemArray[1]-itemArray[0] > 0){
-//             resultArray.push(itemArray[1]-itemArray[0])
-//         }
-//
-//     }
-//     console.log(resultArray)
-//     return resultArray
-//
-// }
-//
-// calculatePriceDelta(prices)
-const calculatePriceDeltaM = (arr) => {
-
-    return arr.map(el => el[1] - el[0]).filter(el2 => el2 > 0)
-}
-
-
-console.log(calculatePriceDeltaM(prices))
-
-const arr = [2, 4, 4, 10]
-
-console.log(arr.reduce((acc, item, i) => {
-    if (i !== arr.length - 1) {
-        return acc += item
-    } else {
-        return (acc += item) / arr.length
-    }
-
-
-}, 0))
-
-
-function some(arr2, item) {
-
-    return arr2.find(el => {
-        return el === item
-    })
-}
-
-
-console.log(some(arr, 4))
-const newArr = []
-
-for (let i = 0; i < prices.length; i++) {
-    for (let j = 0; j < prices[i].length; j++) {
-        newArr.push(prices[i][j])
-    }
-}
-
-
-const arr2 = new Array(5).fill(1)
-
-console.log(arr2)
-
-
-const arr3 = Array.from({length:5}, ()=> 5)
-
-console.log(arr3)
+console.log(team1, draw, team2)
+console.log(goalkeeper)
+console.log(fieldPlayers)
+console.log(allPlayers)
+console.log(players1Total)
+// 6. A write function printGoals that takes an arbitrary number of player names (NOT an array) and prints each one to the console along with the total number of goals scored (the number of player names passed to the function).
+// 7. The team with the lower odds will win more likely. Print to the console which team is more likely to win, WITHOUT using an if / else or ternary operator.
+//     Test data for 6.: First use 'Mingueza', 'Messi', 'Modrich' and 'Nacho' players. Then call the function again with the players from game.scored.
