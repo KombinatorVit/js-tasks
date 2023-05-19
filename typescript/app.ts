@@ -1,5 +1,3 @@
-
-
 const enum Status {
     published,
     draft,
@@ -28,7 +26,6 @@ async function getFaqs(req: ReqType): Promise<ResponseMyType[]> {
 }
 
 
-
-
-
-
+function generateError(message: string): never {
+    throw new Error();
+}
