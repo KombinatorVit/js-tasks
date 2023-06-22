@@ -1,40 +1,39 @@
 'use strict';
 
-// Simply Bank App
 
 const account1 = {
-  userName: 'Cecil Ireland',
-  transactions: [500, 250, -300, 5000, -850, -110, -170, 1100],
-  interest: 1.5,
-  pin: 1111,
+    userName: 'Cecil Ireland',
+    transactions: [500, 250, -300, 5000, -850, -110, -170, 1100],
+    interest: 1.5,
+    pin: 1111,
 };
 
 const account2 = {
-  userName: 'Amani Salt',
-  transactions: [2000, 6400, -1350, -70, -210, -2000, 5500, -30],
-  interest: 1.3,
-  pin: 2222,
+    userName: 'Amani Salt',
+    transactions: [2000, 6400, -1350, -70, -210, -2000, 5500, -30],
+    interest: 1.3,
+    pin: 2222,
 };
 
 const account3 = {
-  userName: 'Corey Martinez',
-  transactions: [900, -200, 280, 300, -200, 150, 1400, -400],
-  interest: 0.8,
-  pin: 3333,
+    userName: 'Corey Martinez',
+    transactions: [900, -200, 280, 300, -200, 150, 1400, -400],
+    interest: 0.8,
+    pin: 3333,
 };
 
 const account4 = {
-  userName: 'Kamile Searle',
-  transactions: [530, 1300, 500, 40, 190],
-  interest: 1,
-  pin: 4444,
+    userName: 'Kamile Searle',
+    transactions: [530, 1300, 500, 40, 190],
+    interest: 1,
+    pin: 4444,
 };
 
 const account5 = {
-  userName: 'Oliver Avila',
-  transactions: [630, 800, 300, 50, 120],
-  interest: 1.1,
-  pin: 5555,
+    userName: 'Oliver Avila',
+    transactions: [630, 800, 300, 50, 120],
+    interest: 1.1,
+    pin: 5555,
 };
 
 const accounts = [account1, account2, account3, account4, account5];
@@ -64,3 +63,59 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+
+
+const displayTransactions = (arr) => {
+
+    containerTransactions.innerHTML = ''
+    arr.forEach((el, index) => {
+
+        const transType = el > 0 ? 'deposit' : 'withdrawal'
+
+        const transactionRow = `
+        <div class="transactions__row">
+           <div class="transactions__type transactions__type--${transType}">
+                ${index}  ${transType}       </div>
+          <div class="transactions__value">${el} </div>
+         </div>
+        `;
+        containerTransactions.insertAdjacentHTML('afterbegin', transactionRow)
+
+    })
+}
+displayTransactions(account1.transactions)
+
+const createNicknames = (arr) => {
+
+    arr.forEach(el => el.nickName = el.userName.toLowerCase().split(' ').map(el => el.slice(0, 1)).join(' '))
+}
+
+createNicknames(accounts)
+
+
+const displayBalance = (transactions) => {
+    const balance = transactions.reduce((acc, el) => {
+        return acc + el
+    }, 0)
+    labelBalance.innerHTML = balance + "$"
+}
+
+displayBalance(account1.transactions)
+
+const displayTotal = (transaction) => {
+    const depositsTotal = transaction.filter(el => el >= 0).reduce((acc, el) => acc + el
+        , 0)
+    labelSumIn.textContent = depositsTotal + "$"
+
+
+    const withdrawaalsTotal = transaction.filter(el => el < 0).reduce((acc, el) => acc + el
+        , 0)
+    labelSumOut.textContent = withdrawaalsTotal + "$"
+
+
+    const interestTotal = transaction.filter(el => el > 0).map(dep => (dep * 1.1) / 100).filter(el=> el>5).reduce((acc, el) => acc + el
+        , 0)
+
+    labelSumInterest.textContent = interestTotal + '$'
+}
+displayTotal(account1.transactions)
