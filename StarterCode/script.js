@@ -37,7 +37,7 @@ const account5 = {
 };
 
 const accounts = [account1, account2, account3, account4, account5];
-
+console.log(accounts)
 // Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
@@ -64,18 +64,25 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+function updateUi(obj) {
+    displayTransactions(obj.transactions)
+    displayBalance(obj)
+    displayTotal(obj)
+}
 
-const displayTransactions = (arr) => {
+const displayTransactions = (arr, sort = false) => {
+
+    const trans = sort ? arr.slice().sort((a, b) => a - b) : arr
 
     containerTransactions.innerHTML = ''
-    arr.forEach((el, index) => {
+    trans.forEach((el, index) => {
 
         const transType = el > 0 ? 'deposit' : 'withdrawal'
 
         const transactionRow = `
         <div class="transactions__row">
            <div class="transactions__type transactions__type--${transType}">
-                ${index}  ${transType}       </div>
+                ${index + 1}  ${transType}       </div>
           <div class="transactions__value">${el} </div>
          </div>
         `;
@@ -83,39 +90,123 @@ const displayTransactions = (arr) => {
 
     })
 }
-displayTransactions(account1.transactions)
 
 const createNicknames = (arr) => {
 
-    arr.forEach(el => el.nickName = el.userName.toLowerCase().split(' ').map(el => el.slice(0, 1)).join(' '))
+    arr.forEach(el => el.nickName = el.userName.toLowerCase().split(' ').map(el => el.slice(0, 1)).join(''))
 }
 
 createNicknames(accounts)
 
 
-const displayBalance = (transactions) => {
-    const balance = transactions.reduce((acc, el) => {
+const displayBalance = (account) => {
+    const balance = account.transactions.reduce((acc, el) => {
+
         return acc + el
     }, 0)
+    account.balance = balance
     labelBalance.innerHTML = balance + "$"
 }
 
-displayBalance(account1.transactions)
 
-const displayTotal = (transaction) => {
-    const depositsTotal = transaction.filter(el => el >= 0).reduce((acc, el) => acc + el
+const displayTotal = (obj) => {
+    const depositsTotal = obj.transactions.filter(el => el >= 0).reduce((acc, el) => acc + el
         , 0)
     labelSumIn.textContent = depositsTotal + "$"
 
 
-    const withdrawaalsTotal = transaction.filter(el => el < 0).reduce((acc, el) => acc + el
+    const withdrawaalsTotal = obj.transactions.filter(el => el < 0).reduce((acc, el) => acc + el
         , 0)
     labelSumOut.textContent = withdrawaalsTotal + "$"
 
 
-    const interestTotal = transaction.filter(el => el > 0).map(dep => (dep * 1.1) / 100).filter(el=> el>5).reduce((acc, el) => acc + el
+    const interestTotal = obj.transactions.filter(el => el > 0).map(dep => (dep * obj.interest) / 100).filter(el => el > 5).reduce((acc, el) => acc + el
         , 0)
 
     labelSumInterest.textContent = interestTotal + '$'
 }
-displayTotal(account1.transactions)
+
+//btnLogin  inputLoginUsername    inputLoginPin
+let currentAccount;
+btnLogin.addEventListener('click', (e) => {
+    e.preventDefault()
+    currentAccount = accounts.find((el) => {
+        console.log(inputLoginUsername.value)
+        return el.nickName === inputLoginUsername.value
+
+    })
+
+    if (currentAccount?.pin === Number(inputLoginPin.value)) {
+        labelWelcome.textContent = `Welcome back, ${currentAccount.userName.split(' ')[0]}!`
+        containerApp.style.opacity = 100
+        inputLoginUsername.value = inputLoginPin.value = ''
+        updateUi(currentAccount)
+    } else {
+        labelWelcome.textContent = 'Wrong credentials'
+        containerApp.style.opacity = 0
+        inputLoginUsername.value = inputLoginPin.value = ''
+        inputLoginPin.blur()
+    }
+    console.log(currentAccount)
+})
+
+btnTransfer.addEventListener('click', (e) => {
+
+
+    e.preventDefault()
+
+
+    const amount = Number(inputTransferAmount.value)
+    const receiverAccount = accounts.find(el => el.nickName === inputTransferTo.value)
+    console.log(amount, receiverAccount)
+    if (amount > 0 && receiverAccount && currentAccount.balance >= amount && receiverAccount.nickName !== currentAccount.nickName) {
+        currentAccount.transactions.push(-amount)
+        receiverAccount.transactions.push(amount)
+        updateUi(currentAccount)
+    } else {
+        let errorDiv = document.createElement('div');
+        errorDiv.classList.add('error');
+        document.querySelector('.operation--transfer').append(errorDiv)
+        errorDiv.textContent = 'Недостаточно денег или вы делаете перевод сами себе!!!';
+        setTimeout(() => {
+            errorDiv.textContent = '';
+
+        }, 3000)
+
+    }
+    inputTransferAmount.value = inputTransferTo.value = ''
+})
+
+btnClose.addEventListener('click', (e) => {
+    e.preventDefault()
+    if (currentAccount.nickName === inputCloseUsername.value && currentAccount.pin === Number(inputClosePin.value)) {
+
+        const currentAccountIndex = accounts.findIndex(el => el.nickName === currentAccount.nickName)
+        accounts.splice(currentAccountIndex, 1)
+
+        console.log(currentAccountIndex)
+        inputCloseUsername.value = inputClosePin.value = ''
+        containerApp.style.opacity = 0
+        labelWelcome.textContent = 'Log in to get started'
+
+    }
+})
+
+
+btnLoan.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    const loanAmount = +inputLoanAmount.value
+    if (loanAmount > 0 && currentAccount.transactions.some(el => el >= loanAmount * 10 / 100)) {
+        currentAccount.transactions.push(loanAmount)
+        updateUi(currentAccount)
+    }
+    inputLoanAmount.value = ''
+
+})
+let arrTransactionSort = false
+btnSort.addEventListener('click', (e) => {
+    e.preventDefault()
+    displayTransactions(currentAccount.transactions, !arrTransactionSort)
+    arrTransactionSort = !arrTransactionSort
+})

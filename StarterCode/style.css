@@ -88,7 +88,7 @@ nav {
   gap: 2rem;
 
   /* Create fade anumation */
-  opacity: 100;
+  opacity: 0;
   transition: all 1s;
 }
 
@@ -288,4 +288,10 @@ h2 {
 
 .timer {
   font-weight: 600;
+}
+
+.error{
+  text-align: center;
+  color: red;
+font-size: 20px;
 }
