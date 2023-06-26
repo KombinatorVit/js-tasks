@@ -107,6 +107,7 @@ nav {
 }
 
 .balance__date {
+  margin: 10px;
   font-size: 1.4rem;
   color: rgb(110, 110, 110);
 }
