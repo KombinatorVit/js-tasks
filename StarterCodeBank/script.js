@@ -127,10 +127,28 @@ nav.addEventListener('mouseout', function (e) {
 
 //Sticky navigation
 
-window.addEventListener('scroll', function (e) {
-    if (window.scrollY > 100) {
-        nav.classList.add('sticky');
-    } else {
-        nav.classList.remove('sticky');
-    }
+// window.addEventListener('scroll', function (e) {
+//     if (window.scrollY > 100) {
+//         nav.classList.add('sticky');
+//     } else {
+//         nav.classList.remove('sticky');
+//     }
+// })
+//Sticky navigation Intersection Observer Api
+const header = document.querySelector('.header');
+function getStikyNav(entries) {
+    console.log(entries)
+const entry = entries[0];
+if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+}else{
+    nav.classList.remove('sticky');
+}
+}
+
+const observer = new IntersectionObserver(getStikyNav, {
+    root: null,
+    threshold: 0,
+    rootMargin: '-90px'
 })
+observer.observe(header)
