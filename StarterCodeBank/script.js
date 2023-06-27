@@ -49,5 +49,50 @@ btnScrollTo.addEventListener('click', function (e) {
     //     top: s1coords.top + window.pageYOffset,
     //     behavior: 'smooth'
     // })
-    section1.scrollIntoView({ behavior: 'smooth' })
+    section1.scrollIntoView({behavior: 'smooth'})
+})
+
+
+// document.querySelectorAll('.nav__link').forEach( (el) =>{
+//     console.log(el)
+//     el.addEventListener('click', function (e) {
+//         e.preventDefault();
+//         const id = this.getAttribute('href');
+//         document.querySelector(id ).scrollIntoView({behavior: 'smooth'})
+//
+//     })
+// })
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+    e.preventDefault();
+    if (e.target.classList.contains('nav__link')) {
+        const id = e.target.getAttribute('href');
+        document.querySelector(id).scrollIntoView({behavior: 'smooth'})
+    }
+
+})
+
+// вкладки
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+
+tabContainer.addEventListener('click', function (e) {
+    const clicked = e.target.closest('.operations__tab');
+    if (!clicked) return;
+    tabs.forEach(function (tab) {
+            tab.classList.remove('operations__tab--active');
+        })
+
+    clicked.classList.add('operations__tab--active');
+
+tabsContent.forEach(function (content) {
+    content.classList.remove('operations__content--active');
+})
+
+    document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.toggle('operations__content--active')
+
+
 })
