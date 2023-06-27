@@ -83,16 +83,45 @@ tabContainer.addEventListener('click', function (e) {
     const clicked = e.target.closest('.operations__tab');
     if (!clicked) return;
     tabs.forEach(function (tab) {
-            tab.classList.remove('operations__tab--active');
-        })
+        tab.classList.remove('operations__tab--active');
+    })
 
     clicked.classList.add('operations__tab--active');
 
-tabsContent.forEach(function (content) {
-    content.classList.remove('operations__content--active');
-})
+    tabsContent.forEach(function (content) {
+        content.classList.remove('operations__content--active');
+    })
 
     document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.toggle('operations__content--active')
 
 
 })
+
+
+const nav = document.querySelector('.nav');
+const siblingLinks = nav.querySelectorAll('.nav__link');
+const logo = nav.querySelector('img');
+const logoText = nav.querySelector('.nav__text');
+
+nav.addEventListener('mouseover', function (e) {
+    if (e.target.classList.contains('nav__link')) {
+        siblingLinks.forEach((el) => {
+            el.style.opacity = 0.5
+        });
+
+        logo.style.opacity = 0.4;
+        logoText.style.opacity = 0.4;
+    }
+});
+
+nav.addEventListener('mouseout', function (e) {
+    if (e.target.classList.contains('nav__link')) {
+        siblingLinks.forEach((el) => {
+            el.style.opacity = 1;
+        });
+
+        logo.style.opacity = 1;
+        logoText.style.opacity = 1;
+    }
+});
+
