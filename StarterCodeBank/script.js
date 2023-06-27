@@ -160,8 +160,8 @@ headerObserver.observe(header)
 const allSections = document.querySelectorAll('.section')
 const appearanceSections = (entries, observer) => {
     const entry = entries[0]
-    if (!entry.isIntersecting)  return
-        entry.target.classList.remove('section--hidden')
+    if (!entry.isIntersecting) return
+    entry.target.classList.remove('section--hidden')
     observer.unobserve(entry.target)
 }
 
@@ -172,4 +172,30 @@ const sectionObserver = new IntersectionObserver(appearanceSections, {
 allSections.forEach(el => {
     sectionObserver.observe(el)
     el.classList.add('section--hidden')
+})
+
+// lazy loading
+
+const lazyImg = document.querySelectorAll('img[data-src]')
+console.log(lazyImg)
+
+const loadImages = (entries, observer) => {
+    const entry = entries[0]
+    if (!entry.isIntersecting) return
+
+    entry.target.src = entry.target.dataset.src
+    entry.target.addEventListener('load', ()=>{
+        entry.target.classList.remove('lazy-img')
+
+    })
+    observer.unobserve(entry.target)
+}
+
+const lazyImagesObserver = new IntersectionObserver(loadImages, {
+    root: null,
+    threshold: 0.1
+})
+
+lazyImg.forEach(el => {
+    lazyImagesObserver.observe(el)
 })
