@@ -136,19 +136,40 @@ nav.addEventListener('mouseout', function (e) {
 // })
 //Sticky navigation Intersection Observer Api
 const header = document.querySelector('.header');
+
 function getStikyNav(entries) {
     console.log(entries)
-const entry = entries[0];
-if (!entry.isIntersecting) {
-    nav.classList.add('sticky');
-}else{
-    nav.classList.remove('sticky');
-}
+    const entry = entries[0];
+    if (!entry.isIntersecting) {
+        nav.classList.add('sticky');
+    } else {
+        nav.classList.remove('sticky');
+    }
 }
 
-const observer = new IntersectionObserver(getStikyNav, {
+const headerObserver = new IntersectionObserver(getStikyNav, {
     root: null,
     threshold: 0,
     rootMargin: '-90px'
 })
-observer.observe(header)
+headerObserver.observe(header)
+
+//появление секция сайта
+
+
+const allSections = document.querySelectorAll('.section')
+const appearanceSections = (entries, observer) => {
+    const entry = entries[0]
+    if (!entry.isIntersecting)  return
+        entry.target.classList.remove('section--hidden')
+    observer.unobserve(entry.target)
+}
+
+const sectionObserver = new IntersectionObserver(appearanceSections, {
+    root: null,
+    threshold: 0.10
+})
+allSections.forEach(el => {
+    sectionObserver.observe(el)
+    el.classList.add('section--hidden')
+})
