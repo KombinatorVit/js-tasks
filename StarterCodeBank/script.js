@@ -171,7 +171,7 @@ const sectionObserver = new IntersectionObserver(appearanceSections, {
 })
 allSections.forEach(el => {
     sectionObserver.observe(el)
-    el.classList.add('section--hidden')
+    // el.classList.add('section--hidden')
 })
 
 // lazy loading
@@ -184,7 +184,7 @@ const loadImages = (entries, observer) => {
     if (!entry.isIntersecting) return
 
     entry.target.src = entry.target.dataset.src
-    entry.target.addEventListener('load', ()=>{
+    entry.target.addEventListener('load', () => {
         entry.target.classList.remove('lazy-img')
 
     })
@@ -198,4 +198,44 @@ const lazyImagesObserver = new IntersectionObserver(loadImages, {
 
 lazyImg.forEach(el => {
     lazyImagesObserver.observe(el)
+})
+
+//slider
+
+const slides = document.querySelectorAll('.slide')
+const btnLeft = document.querySelector('.slider__btn--left')
+const btnRight = document.querySelector('.slider__btn--right')
+
+
+let currentSlide = 0
+const slidesNumber = slides.length
+
+//код для раработки, чтобы уменьшить картинки
+// const slider = document.querySelector('.slider')
+// slider.style.transform = 'scale(0.4) translateX(-600px)'
+// slider.style.overflow = 'visible'
+
+
+const moveToSlide = (slide) => {
+    slides.forEach((el, index) => el.style.transform = `translateX(${(index - slide) * 100}%)`)
+}
+moveToSlide(0)
+
+
+btnRight.addEventListener('click', () => {
+    if (currentSlide === slidesNumber - 1) {
+        currentSlide = 0
+    } else {
+        currentSlide++
+    }
+    moveToSlide(currentSlide)
+})
+
+btnLeft.addEventListener('click', () => {
+    if (currentSlide === 0) {
+        currentSlide = slidesNumber - 1
+    } else {
+        currentSlide--
+    }
+    moveToSlide(currentSlide)
 })
