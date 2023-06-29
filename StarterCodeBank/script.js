@@ -205,6 +205,7 @@ lazyImg.forEach(el => {
 const slides = document.querySelectorAll('.slide')
 const btnLeft = document.querySelector('.slider__btn--left')
 const btnRight = document.querySelector('.slider__btn--right')
+const dotsContainer = document.querySelector('.dots')
 
 
 let currentSlide = 0
@@ -221,21 +222,59 @@ const moveToSlide = (slide) => {
 }
 moveToSlide(0)
 
+const createDots = () => {
+    slides.forEach((_, index) => {
+        dotsContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${index}"></button>`)
+    })
 
-btnRight.addEventListener('click', () => {
+}
+createDots()
+
+const activateCurrentDot = (slide) => {
+    document.querySelectorAll(`.dots__dot`).forEach(el => el.classList.remove('dots__dot--active'))
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active')
+
+
+}
+activateCurrentDot(0)
+
+const nextSlide = () => {
     if (currentSlide === slidesNumber - 1) {
         currentSlide = 0
     } else {
         currentSlide++
     }
     moveToSlide(currentSlide)
-})
+    activateCurrentDot(currentSlide)
+}
 
-btnLeft.addEventListener('click', () => {
+const prevSlide = () => {
     if (currentSlide === 0) {
         currentSlide = slidesNumber - 1
     } else {
         currentSlide--
     }
     moveToSlide(currentSlide)
+    activateCurrentDot(currentSlide)
+
+}
+btnRight.addEventListener('click', nextSlide)
+
+btnLeft.addEventListener('click', prevSlide)
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+        prevSlide()
+    }
+    if (e.key === 'ArrowRight') {
+        nextSlide()
+    }
+})
+
+dotsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('dots__dot')) {
+        const slide = e.target.dataset.slide
+        moveToSlide(slide)
+        activateCurrentDot(slide)
+    }
 })
