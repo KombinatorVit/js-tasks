@@ -90,3 +90,23 @@ var carousel = new Carousel({
   selector: '.carousel',
   slides: new Array(4).fill('https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg')
 });
+
+
+
+let obj = {
+  a: {
+    1: 'a1',
+    2: 'a2',
+    3: 'a3',
+  },
+  b: {
+    1: 'b1',
+    2: 'b2',
+    3: 'b3',
+  },
+  c: {
+    1: 'c1',
+    2: 'c2',
+    3: 'c3',
+  },
+}
